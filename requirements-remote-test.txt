@@ -1,0 +1,2 @@
+# Offline profile validation only; no Home Assistant or transport dependency.
+PyYAML>=6.0,<7

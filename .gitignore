@@ -5,3 +5,6 @@ __pycache__/
 
 # HACS
 custom_components/solarman/inverter_definitions/custom/
+
+# Local offline Remote Mode test environment
+.venv/

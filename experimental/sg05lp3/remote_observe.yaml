@@ -1,0 +1,85 @@
+# Observation fragment, NOT a replacement production profile.
+# Not loaded by the integration. Use only in an isolated test environment after
+# appending this group to a copy of the verified base profile.
+# FC03 reads only. No writable entities. Polling is NOT watchdog refreshing.
+default:
+  code: 0x03
+  update_interval: 30
+parameters:
+  - group: SG05LP3 Remote Observe
+    update_interval: 30
+    items:
+      - name: Remote Mode Raw Unresolved
+        platform: sensor
+        rule: 1
+        registers: [1100]
+      - name: Remote Watchdog Raw
+        platform: sensor
+        rule: 1
+        registers: [1101]
+      - name: Remote Control Side Raw
+        platform: sensor
+        rule: 1
+        registers: [1104]
+      - name: Remote Battery Strategy Raw
+        platform: sensor
+        rule: 1
+        registers: [1105]
+      - name: Remote AC Control Selection Raw
+        platform: sensor
+        rule: 1
+        registers: [1106]
+      - name: Remote Battery Voltage Target
+        platform: sensor
+        rule: 1
+        scale: 0.1
+        uom: V
+        registers: [1107]
+      - name: Remote Battery Current Target
+        platform: sensor
+        rule: 1
+        scale: 0.1
+        uom: A
+        registers: [1108]
+      - name: Remote Battery Power Request
+        platform: sensor
+        rule: 2
+        scale: 0.1
+        uom: "%"
+        registers: [1109]
+      - name: Remote Battery SOC Target
+        platform: sensor
+        rule: 1
+        scale: 0.1
+        uom: "%"
+        registers: [1110]
+      - name: Remote Total AC Power Request
+        platform: sensor
+        rule: 2
+        scale: 0.1
+        uom: "%"
+        registers: [1111]
+      - name: Remote Phase A Power Request
+        platform: sensor
+        rule: 2
+        scale: 0.1
+        uom: "%"
+        registers: [1112]
+      - name: Remote Phase B Power Request
+        platform: sensor
+        rule: 2
+        scale: 0.1
+        uom: "%"
+        registers: [1113]
+      - name: Remote Phase C Power Request
+        platform: sensor
+        rule: 2
+        scale: 0.1
+        uom: "%"
+        registers: [1114]
+      - name: Remote Maximum PV Request
+        platform: sensor
+        rule: 1
+        scale: 0.1
+        uom: "%"
+        registers: [1115]
