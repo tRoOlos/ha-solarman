@@ -22,7 +22,7 @@ Alle adressen zijn decimaal; geen +/-1 adrescorrectie toepassen.
 
 | Adres | Deye-definitie | Schaal / grenzen | Status |
 | --- | --- | --- | --- |
-| 1100 | Remote Mode | S1/S3: 0 uit, 1 aan; S2: 0 enter, 1 exit | CONFLICT; alleen raw lezen |
+| 1100 | Remote Mode-commandowaarde | 0 enter, 1 exit volgens S2 en firmwarebevestiging S4 | LEVERANCIER BEVESTIGD; nog niet fysiek getest |
 | 1101 | Watchdog | configuratie 10–18000 s; 65535 = uit | refreshmechanisme ONBEKEND |
 | 1104 | Control side | 0 AC, 1 batterij, 2 net; range-kolom S1 noemt alleen 0/1 | batterijwaarde 1 bevestigd S4 |
 | 1105 | Battery strategy | 2 vermogen; 3 SOC; 4/5 genoemd buiten range-kolom | 2 bevestigd S4; andere modes niet testen |
@@ -37,15 +37,22 @@ Alle adressen zijn decimaal; geen +/-1 adrescorrectie toepassen.
 
 1102/1103 en 1116+ worden niet aangevraagd of geschreven in deze proef.
 Er worden geen statusbits afgeleid uit 1121: S1 noemt daar reactieve fase-C-data.
-Voor 1100 mag raw 0/1 niet als betrouwbaar aan/uit-label worden weergegeven.
+S1/S3 noemen voor 1100 de tegengestelde aan/uit-definitie. S4 bevestigt expliciet
+de S2-interpretatie voor C05F/1184: schrijven van 0 betekent enter, 1 betekent exit.
+Die leveranciersbevestiging is de gekozen commandospecificatie voor deze scope;
+1100 is dus geen onbeantwoorde documentatievraag meer. Niet generaliseren naar
+andere modellen/firmware. Een raw read van 0/1 is op zichzelf nog geen bewezen
+actief/inactief-status: daarvoor ontbreken testrespons en een bevestigd statusmodel.
 Een watchdog-read kan een aftelling of instelling zijn; ruwe waarde bewaren.
 65535 herkennen als watchdog uit, niet als geldige timeout.
 
 ## Codering en schrijfprotocol
 
-S4 bevestigt 1104=1, 1105=2, signed 1109 en FC16 (0x10).
+S4 bevestigt 1100 enter=0/exit=1, 1104=1, 1105=2, signed 1109 en FC16 (0x10).
 Niet aaneengesloten adressen niet samenvoegen door tussenliggende velden te
-overschrijven. De veilige entry-/exit-/watchdogvolgorde is nog niet gespecificeerd.
+overschrijven. De volledige volgorde inclusief watchdog-initialisatie en
+refreshhandeling is nog niet gespecificeerd; dit verandert niets aan de al
+bevestigde afzonderlijke commandowaarden.
 
 1109: raw = vermogen_W / nominaal_W * 1000. Afronden naar nul.
 15 kW: +300 W -> +20; -300 W -> -20; signed -20 -> unsigned wire 65516.
@@ -57,7 +64,7 @@ Batterijspanning (V), stroom (A), vermogen (W) en SOC (%) zijn niet uitwisselbaa
 
 ## Bewijsstatus en vragen
 
-S4 wijst voor 1100 op S2, bevestigt volatile commands, CAN-BMS-bescherming en
+S4 bevestigt voor 1100 de S2-definitie, volatile commands, CAN-BMS-bescherming en
 TOU-terugval bij communicatie-/watchdogverlies. Dit zijn leveranciersantwoorden,
 geen gemeten testresultaten.
 
@@ -65,7 +72,9 @@ S4 zegt over transport: uitsluitend RS485-adapter ondersteund. Dit is geen bewij
 van een fysieke blokkade in de LSW-5, maar ook geen toezegging dat deze route werkt.
 Een fork kan deze onzekerheid niet wegprogrammeren.
 
-Nog aan Deye/Bram te bevestigen: eenduidige 1100 entry/exit voor deze firmware,
-exacte refreshhandeling (1101 opnieuw schrijven of andere handeling), timeout versus
+Nog aan Deye/Bram te verduidelijken: exacte refreshhandeling (1101 opnieuw
+schrijven of andere handeling), timeout versus
 aftelwaarde, betekenis van de genoemde één seconde, aanbevolen commandovolgorde,
 FC16 readback en veilige nul-/laagvermogentest op de gekozen verbinding.
+1100 entry=0/exit=1 hoeft voor de genoemde firmware niet opnieuw als open vraag
+gesteld te worden; de fysieke uitvoering wordt later afzonderlijk getest.

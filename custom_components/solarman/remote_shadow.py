@@ -12,10 +12,16 @@ from typing import Protocol
 
 MODEL = "SUN-15K-SG05LP3-EU-SM2"
 FIRMWARE = ("1001-C05F", "2107-1184-1809", "D20A")
+# Deye's firmware-specific email resolves the conflicting document definitions.
+# Command values only: these are not a decoder for observed operating status.
+# The reported firmware above has not been reverified by this offline module.
+MODE_ENTRY_VALUE = 0
+MODE_EXIT_VALUE = 1
+MODE_SEMANTICS_EVIDENCE = "VENDOR_CONFIRMED_NOT_LIVE_VERIFIED"
 READ_BLOCKS = ((1100, 2), (1104, 12))
 READ_ADDRESSES = frozenset((1100, 1101, *range(1104, 1116)))
 UNRESOLVED = (
-    "1100 enable/exit semantics conflict between supplied documents",
+    "1100 vendor-confirmed command semantics not physically tested on this firmware",
     "1101 refresh operation and timing not fully specified",
     "LSW-5 Remote Mode writes and watchdog cadence not verified",
     "TOU watchdog fallback not physically verified on this firmware",
@@ -120,7 +126,8 @@ class DecodedSnapshot:
     power_request_percent: Decimal
     target_soc_percent: Decimal
     watchdog_off: bool
-    mode_interpretation: str = "UNRESOLVED"
+    # Evidence status, not an assertion that Remote Mode is active/inactive.
+    mode_interpretation: str = MODE_SEMANTICS_EVIDENCE
     # Even complete readback proves neither physical response nor safe fallback.
     live_control_verified: bool = False
 

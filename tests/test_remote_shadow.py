@@ -78,11 +78,23 @@ class CodecTests(unittest.TestCase):
             self.assertGreaterEqual(len(preview.blockers), 4)
         self.assertEqual(remote.preview_power(1).intent, "HOLD")
 
-    def test_string_keys_and_unknown_mode_remain_raw(self):
+    def test_vendor_confirmed_mode_commands_do_not_prove_live_status(self):
+        self.assertEqual(remote.MODE_ENTRY_VALUE, 0)
+        self.assertEqual(remote.MODE_EXIT_VALUE, 1)
+        for raw_mode in (0, 1, 2, 65535):
+            with self.subTest(raw_mode=raw_mode):
+                result = remote.decode_snapshot(snapshot() | {1100: raw_mode},
+                                                datetime.now(timezone.utc))
+                self.assertEqual(dict(result.raw)[1100], raw_mode)
+                self.assertEqual(result.mode_interpretation,
+                                 "VENDOR_CONFIRMED_NOT_LIVE_VERIFIED")
+                self.assertFalse(result.live_control_verified)
+
+    def test_string_keys_and_unverified_mode_remain_raw(self):
         data = {str(k): v for k, v in snapshot().items()}
         result = remote.decode_snapshot(data, datetime.now(timezone.utc))
         self.assertEqual(result.target_soc_percent, 50)
-        self.assertEqual(result.mode_interpretation, "UNRESOLVED")
+        self.assertEqual(result.mode_interpretation, "VENDOR_CONFIRMED_NOT_LIVE_VERIFIED")
         self.assertFalse(result.live_control_verified)
 
     def test_incomplete_duplicate_or_extra_snapshot(self):

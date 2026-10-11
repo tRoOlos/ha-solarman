@@ -9,7 +9,8 @@ parameters:
   - group: SG05LP3 Remote Observe
     update_interval: 30
     items:
-      - name: Remote Mode Raw Unresolved
+      # Command semantics confirmed by Deye; raw read is not live-status proof.
+      - name: Remote Mode Raw Unverified
         platform: sensor
         rule: 1
         registers: [1100]

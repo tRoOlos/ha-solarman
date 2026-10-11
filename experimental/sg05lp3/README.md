@@ -59,8 +59,12 @@ toggle of een voorspelde PV-/loadwaarde is geen garantie.
 
 ## Open blokkades
 
-1. Tegengestelde betekenis van 1100 in Deye-bronnen; mail wijst op EMS-variant,
-   maar gedrag op de actuele firmware is niet vastgesteld.
+1100 is door Deye bevestigd voor C05F/1184: **0 = enter, 1 = exit**.
+De tegengestelde documentdefinities blijven als bronhistorie vastgelegd, niet
+als onbeantwoorde vraag. Dit is geen gemeten actief/inactief-status.
+
+1. Firmware-identiteit en fysieke werking van de bevestigde 1100-commandowaarden
+   zijn nog niet tijdens een gecontroleerde schrijftest vastgesteld.
 2. Watchdog: exact te verversen register, volgorde en deadline ontbreken.
 3. Deye bevestigt uitsluitend adapterondersteuning; LSW-5 schrijftests niet bewezen.
 4. TOU-terugval en actuele BMS-/fase-/eigenaar-gates niet fysiek getest.
@@ -84,7 +88,7 @@ blijven ongemoeid. Originele mails en documenten worden niet mee gepubliceerd.
 | `tools/remote_shadow_preview.py` | Nieuwe offline CLI, geen HA/netwerkverbinding |
 | `requirements-remote-test.txt` | Alleen PyYAML voor offline testvalidatie |
 
-Offline validatie: 23 tests geslaagd op Python 3.12. Geen HA-runtime-importtest,
+Offline validatie: 24 tests geslaagd op Python 3.12. Geen HA-runtime-importtest,
 geen live writes, geen fysieke watchdog-/TOU-terugvaltest. Het bestaande
 productieprofiel en de bestaande service-implementatie zijn niet gewijzigd.
 De handmatige FC03-read gebruikte de bestaande HA-action; de nieuwe probe en

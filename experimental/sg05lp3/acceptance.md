@@ -30,7 +30,9 @@ freshnessvalidatie ontbreken nog. Na keuze en toestemming voor exacte bestanden:
 
 ## Fase 2 Handmatige nul- en laagvermogentest
 
-GEBLOKKEERD totdat 1100 en watchdogmechanisme eenduidig zijn en gebruiker
+1100 enter=0/exit=1 is reeds door Deye bevestigd voor C05F/1184; geen open
+documentatievraag. Firmware-identiteit en fysieke uitvoering zijn nog te testen.
+GEBLOKKEERD totdat het watchdogmechanisme eenduidig is en gebruiker
 de exacte commando's, verbinding, duur en maximale vermogens apart heeft goedgekeurd.
 Er is nog geen executor voor deze fase.
 
